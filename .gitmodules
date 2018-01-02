@@ -1,0 +1,6 @@
+[submodule "services/mailcow-mysql"]
+	path = services/mailcow-mysql
+	url = git@github.com:pedrogoncalvesk/mailcow-mysql.git
+[submodule "services/mailcow-unbound"]
+	path = services/mailcow-unbound
+	url = git@github.com:pedrogoncalvesk/mailcow-unbound.git
