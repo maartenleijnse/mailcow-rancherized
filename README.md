@@ -1,8 +1,4 @@
-# mailcow: dockerized - 🐮 + 🐋 = 💕
-
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JWBSYHF4SMC68)
-
-**mailcow Bitcoin donations:** 1E5rgzgA1sS3QH7r1ToWxRC3GEavfsGMrx
+# mailcow: dockerized and rancherized - 🐮 + 🐋 + :rocket: = 💕
 
 Please see [the official documentation](https://mailcow.github.io/mailcow-dockerized-docs/) for instructions.
 
