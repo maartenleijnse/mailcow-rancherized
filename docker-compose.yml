@@ -75,15 +75,20 @@ services:
         aliases:
           - rspamd
 
-  php-fpm-mailcow:
-    image: mailcow/phpfpm:1.5
-    build: ./data/Dockerfiles/phpfpm
+  php-fpm:
+    image: pedrogoncalvesk/mailcow-phpfpm:2.0
+    build: ./services/mailcow-phpfpm
     command: "php-fpm -d date.timezone=${TZ} -d expose_php=0"
     depends_on:
       - redis
+      - mysql
+    links:
+      - redis:redis-mailcow
+      - mysql:mysql-mailcow
     volumes:
-      - ./data/web:/web:rw
-      - ./data/conf/rspamd/dynmaps:/dynmaps:ro
+      # - ./data/web:/web:rw
+      # - ./data/conf/rspamd/dynmaps:/dynmaps:ro
+      - ./services/mailcow-phpfpm/web/.well-known:/web/.well-known:rw
       - dkim-vol-1:/data/dkim
     environment:
       - DBNAME=${DBNAME}
@@ -106,17 +111,15 @@ services:
         aliases:
           - phpfpm
 
-  sogo-mailcow:
-    image: mailcow/sogo:1.10
-    build: ./data/Dockerfiles/sogo
+  sogo:
+    image: pedrogoncalvesk/mailcow-sogo:2.0
+    build: ./services/mailcow-sogo
     environment:
       - DBNAME=${DBNAME}
       - DBUSER=${DBUSER}
       - DBPASS=${DBPASS}
       - TZ=${TZ}
       - MAILCOW_HOSTNAME=${MAILCOW_HOSTNAME}
-    volumes:
-      - ./data/conf/sogo/:/etc/sogo/
     restart: always
     dns:
       - 172.22.1.254
@@ -130,8 +133,8 @@ services:
     image: pedrogoncalvesk/mailcow-nginx:1.0
     build: ./services/mailcow-nginx
     depends_on:
-      # - sogo-mailcow
-      # - php-fpm-mailcow
+      - sogo
+      - php-fpm
       - redis
     environment:
       - HTTPS_PORT=${HTTPS_PORT:-443}
@@ -224,14 +227,15 @@ services:
         aliases:
           - memcached
 
-  acme-mailcow:
+  acme:
+    image: pedrogoncalvesk/mailcow-acme:2.0
+    build: ./services/mailcow-acme
     depends_on:
       - nginx
       - mysql
-    image: mailcow/acme:1.24
-    build: ./data/Dockerfiles/acme
-    dns:
-      - 172.22.1.254
+      - dockerapi
+    links: 
+      - mysql:mysql-mailcow
     environment:
       - ADDITIONAL_SAN=${ADDITIONAL_SAN}
       - MAILCOW_HOSTNAME=${MAILCOW_HOSTNAME}
@@ -241,10 +245,12 @@ services:
       - SKIP_LETS_ENCRYPT=${SKIP_LETS_ENCRYPT:-n}
       - SKIP_IP_CHECK=${SKIP_IP_CHECK:-n}
     volumes:
-      - ./data/web/.well-known/acme-challenge:/var/www/acme:rw
+      - ./services/mailcow-phpfpm/web/.well-known/acme-challenge:/var/www/acme:rw
       - ./data/assets/ssl:/var/lib/acme/:rw
       - ./data/assets/ssl-example:/var/lib/ssl-example/:ro
     restart: always
+    dns:
+      - 172.22.1.254
     networks:
       mailcow-network:
         aliases:
@@ -257,8 +263,8 @@ services:
     depends_on:
       - dovecot-mailcow
       - postfix-mailcow
-      - sogo-mailcow
-      - php-fpm-mailcow
+      - sogo
+      - php-fpm
       - redis
     restart: always
     privileged: true
@@ -290,13 +296,13 @@ services:
         aliases:
           - watchdog
 
-  dockerapi-mailcow:
-    image: mailcow/dockerapi:1.2
-    restart: always
-    build: ./data/Dockerfiles/dockerapi
+  dockerapi:
+    image: pedrogoncalvesk/mailcow-dockerapi:2.0
+    build: ./services/mailcow-dockerapi
     oom_score_adj: -10
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always
     networks:
       mailcow-network:
         aliases:

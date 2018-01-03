@@ -13,3 +13,15 @@
 [submodule "services/mailcow-nginx"]
 	path = services/mailcow-nginx
 	url = git@github.com:pedrogoncalvesk/mailcow-nginx.git
+[submodule "services/mailcow-acme"]
+	path = services/mailcow-acme
+	url = git@github.com:pedrogoncalvesk/mailcow-acme.git
+[submodule "services/mailcow-dockerapi"]
+	path = services/mailcow-dockerapi
+	url = git@github.com:pedrogoncalvesk/mailcow-dockerapi.git
+[submodule "services/mailcow-phpfpm"]
+	path = services/mailcow-phpfpm
+	url = git@github.com:pedrogoncalvesk/mailcow-phpfpm.git
+[submodule "services/mailcow-sogo"]
+	path = services/mailcow-sogo
+	url = git@github.com:pedrogoncalvesk/mailcow-sogo.git
