@@ -103,7 +103,7 @@ USE_WATCHDOG=n
 
 EOF
 
-mkdir -p data/assets/ssl
+mkdir -p assets/ssl
 
 # copy but don't overwrite existing certificate
-cp -n data/assets/ssl-example/*.pem data/assets/ssl/
+cp -n assets/ssl-example/*.pem assets/ssl/

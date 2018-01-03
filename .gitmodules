@@ -25,3 +25,15 @@
 [submodule "services/mailcow-sogo"]
 	path = services/mailcow-sogo
 	url = git@github.com:pedrogoncalvesk/mailcow-sogo.git
+[submodule "services/mailcow-dovecot"]
+	path = services/mailcow-dovecot
+	url = git@github.com:pedrogoncalvesk/mailcow-dovecot.git
+[submodule "services/mailcow-fail2ban"]
+	path = services/mailcow-fail2ban
+	url = git@github.com:pedrogoncalvesk/mailcow-fail2ban.git
+[submodule "services/mailcow-postfix"]
+	path = services/mailcow-postfix
+	url = git@github.com:pedrogoncalvesk/mailcow-postfix.git
+[submodule "services/mailcow-watchdog"]
+	path = services/mailcow-watchdog
+	url = git@github.com:pedrogoncalvesk/mailcow-watchdog.git
