@@ -4,3 +4,12 @@
 [submodule "services/mailcow-unbound"]
 	path = services/mailcow-unbound
 	url = git@github.com:pedrogoncalvesk/mailcow-unbound.git
+[submodule "services/mailcow-clamd"]
+	path = services/mailcow-clamd
+	url = git@github.com:pedrogoncalvesk/mailcow-clamd.git
+[submodule "services/mailcow-rspamd"]
+	path = services/mailcow-rspamd
+	url = git@github.com:pedrogoncalvesk/mailcow-rspamd.git
+[submodule "services/mailcow-nginx"]
+	path = services/mailcow-nginx
+	url = git@github.com:pedrogoncalvesk/mailcow-nginx.git

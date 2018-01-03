@@ -3,7 +3,7 @@ services:
 
   unbound:
     image: pedrogoncalvesk/mailcow-unbound:2.0
-    build: ./data/Dockerfiles/unbound
+    build: ./services/mailcow-unbound
     restart: always
     networks:
       mailcow-network:
@@ -13,7 +13,7 @@ services:
 
   mysql:
     image: pedrogoncalvesk/mailcow-mysql:1.0
-    build: ./data/Dockerfiles/mysql
+    build: ./services/mailcow-mysql
     volumes:
       - mysql-vol-1:/var/lib/mysql/
     environment:
@@ -43,9 +43,9 @@ services:
         aliases:
           - redis
 
-  clamd-mailcow:
-    image: mailcow/clamd:1.5
-    build: ./data/Dockerfiles/clamd
+  clamd:
+    image: pedrogoncalvesk/mailcow-clamd:2.0
+    build: ./services/mailcow-clamd
     restart: always
     environment:
       - SKIP_CLAMD=${SKIP_CLAMD:-n}
@@ -56,17 +56,13 @@ services:
         aliases:
           - clamd
 
-  rspamd-mailcow:
-    image: mailcow/rspamd:1.14
-    build: ./data/Dockerfiles/rspamd
+  rspamd:
+    image: pedrogoncalvesk/mailcow-rspamd:2.0
+    build: ./services/mailcow-rspamd
     stop_grace_period: 30s
     depends_on:
-      - nginx-mailcow
+      - nginx
     volumes:
-      - ./data/conf/rspamd/custom/:/etc/rspamd/custom:ro
-      - ./data/conf/rspamd/override.d/:/etc/rspamd/override.d:ro
-      - ./data/conf/rspamd/local.d/:/etc/rspamd/local.d:ro
-      - ./data/conf/rspamd/lua/:/etc/rspamd/lua/:ro
       - dkim-vol-1:/data/dkim
       - rspamd-vol-1:/var/lib/rspamd
     restart: always
@@ -129,6 +125,33 @@ services:
         ipv4_address: 172.22.1.252
         aliases:
           - sogo
+
+  nginx:
+    image: pedrogoncalvesk/mailcow-nginx:1.0
+    build: ./services/mailcow-nginx
+    depends_on:
+      # - sogo-mailcow
+      # - php-fpm-mailcow
+      - redis
+    environment:
+      - HTTPS_PORT=${HTTPS_PORT:-443}
+      - HTTP_PORT=${HTTP_PORT:-80}
+      - MAILCOW_HOSTNAME=${MAILCOW_HOSTNAME}
+    volumes:
+      # - ./data/web:/web:ro
+      # - ./data/conf/rspamd/dynmaps:/dynmaps:ro
+      - ./data/assets/ssl/:/etc/ssl/mail/:ro
+    ports:
+      - "${HTTPS_BIND:-0.0.0.0}:${HTTPS_PORT:-443}:${HTTPS_PORT:-443}"
+      - "${HTTP_BIND:-0.0.0.0}:${HTTP_PORT:-80}:${HTTP_PORT:-80}"
+    restart: always
+    dns:
+      - 172.22.1.254
+    networks:
+      mailcow-network:
+        ipv4_address: 172.22.1.251
+        aliases:
+          - nginx
 
   dovecot-mailcow:
     image: mailcow/dovecot:1.12
@@ -201,44 +224,9 @@ services:
         aliases:
           - memcached
 
-  nginx-mailcow:
-    depends_on:
-      - sogo-mailcow
-      - php-fpm-mailcow
-      - redis
-    image: nginx:mainline-alpine
-    command: /bin/sh -c "envsubst < /etc/nginx/conf.d/templates/listen_plain.template > /etc/nginx/conf.d/listen_plain.active &&
-      envsubst < /etc/nginx/conf.d/templates/listen_ssl.template > /etc/nginx/conf.d/listen_ssl.active &&
-      envsubst < /etc/nginx/conf.d/templates/server_name.template > /etc/nginx/conf.d/server_name.active &&
-      nginx -qt &&
-      until ping phpfpm -c1 > /dev/null; do sleep 1; done &&
-      until ping sogo -c1 > /dev/null; do sleep 1; done &&
-      until ping redis -c1 > /dev/null; do sleep 1; done &&
-      exec nginx -g 'daemon off;'"
-    environment:
-      - HTTPS_PORT=${HTTPS_PORT:-443}
-      - HTTP_PORT=${HTTP_PORT:-80}
-      - MAILCOW_HOSTNAME=${MAILCOW_HOSTNAME}
-    volumes:
-      - ./data/web:/web:ro
-      - ./data/conf/rspamd/dynmaps:/dynmaps:ro
-      - ./data/assets/ssl/:/etc/ssl/mail/:ro
-      - ./data/conf/nginx/:/etc/nginx/conf.d/:rw
-    ports:
-      - "${HTTPS_BIND:-0.0.0.0}:${HTTPS_PORT:-443}:${HTTPS_PORT:-443}"
-      - "${HTTP_BIND:-0.0.0.0}:${HTTP_PORT:-80}:${HTTP_PORT:-80}"
-    restart: always
-    dns:
-      - 172.22.1.254
-    networks:
-      mailcow-network:
-        ipv4_address: 172.22.1.251
-        aliases:
-          - nginx
-
   acme-mailcow:
     depends_on:
-      - nginx-mailcow
+      - nginx
       - mysql
     image: mailcow/acme:1.24
     build: ./data/Dockerfiles/acme
