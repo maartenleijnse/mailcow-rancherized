@@ -79,7 +79,7 @@ else
 	exit 1
 fi
 
-read -r -p "Are you sure you want to update mailcow: dockerized? All containers will be stoped. [y/N] " response
+read -r -p "Are you sure you want to update mailcow: dockerized? All containers will be stopped. [y/N] " response
 if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
 	echo "OK, exiting."
 	exit 0
@@ -134,8 +134,8 @@ sleep 2
 docker-compose pull --parallel
 
 # Fix missing SSL, does not overwrite existing files
-[[ ! -d data/assets/ssl ]] && mkdir -p data/assets/ssl
-cp -n data/assets/ssl-example/*.pem data/assets/ssl/
+# [[ ! -d assets/ssl ]] && mkdir -p assets/ssl
+# cp -n assets/ssl-example/*.pem assets/ssl/
 
 echo -e "\e[32mStarting mailcow...\e[0m"
 sleep 2

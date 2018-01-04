@@ -1,0 +1,39 @@
+[submodule "services/mailcow-mysql"]
+	path = services/mailcow-mysql
+	url = git@github.com:pedrogoncalvesk/mailcow-mysql.git
+[submodule "services/mailcow-unbound"]
+	path = services/mailcow-unbound
+	url = git@github.com:pedrogoncalvesk/mailcow-unbound.git
+[submodule "services/mailcow-clamd"]
+	path = services/mailcow-clamd
+	url = git@github.com:pedrogoncalvesk/mailcow-clamd.git
+[submodule "services/mailcow-rspamd"]
+	path = services/mailcow-rspamd
+	url = git@github.com:pedrogoncalvesk/mailcow-rspamd.git
+[submodule "services/mailcow-nginx"]
+	path = services/mailcow-nginx
+	url = git@github.com:pedrogoncalvesk/mailcow-nginx.git
+[submodule "services/mailcow-acme"]
+	path = services/mailcow-acme
+	url = git@github.com:pedrogoncalvesk/mailcow-acme.git
+[submodule "services/mailcow-dockerapi"]
+	path = services/mailcow-dockerapi
+	url = git@github.com:pedrogoncalvesk/mailcow-dockerapi.git
+[submodule "services/mailcow-phpfpm"]
+	path = services/mailcow-phpfpm
+	url = git@github.com:pedrogoncalvesk/mailcow-phpfpm.git
+[submodule "services/mailcow-sogo"]
+	path = services/mailcow-sogo
+	url = git@github.com:pedrogoncalvesk/mailcow-sogo.git
+[submodule "services/mailcow-dovecot"]
+	path = services/mailcow-dovecot
+	url = git@github.com:pedrogoncalvesk/mailcow-dovecot.git
+[submodule "services/mailcow-fail2ban"]
+	path = services/mailcow-fail2ban
+	url = git@github.com:pedrogoncalvesk/mailcow-fail2ban.git
+[submodule "services/mailcow-postfix"]
+	path = services/mailcow-postfix
+	url = git@github.com:pedrogoncalvesk/mailcow-postfix.git
+[submodule "services/mailcow-watchdog"]
+	path = services/mailcow-watchdog
+	url = git@github.com:pedrogoncalvesk/mailcow-watchdog.git
