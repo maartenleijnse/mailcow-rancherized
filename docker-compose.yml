@@ -318,7 +318,7 @@ services:
           - watchdog
 
   dockerapi:
-    image: pedrogoncalvesk/mailcow-dockerapi:2.1
+    image: pedrogoncalvesk/mailcow-dockerapi:2.2
     build: ./services/mailcow-dockerapi
     oom_score_adj: -10
     environment:
