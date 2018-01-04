@@ -2,7 +2,7 @@ version: '2.1'
 services:
 
   unbound:
-    image: pedrogoncalvesk/mailcow-unbound:2.0
+    image: pedrogoncalvesk/mailcow-unbound:2.1
     build: ./services/mailcow-unbound
     restart: always
     networks:
@@ -44,7 +44,7 @@ services:
           - redis
 
   clamd:
-    image: pedrogoncalvesk/mailcow-clamd:2.0
+    image: pedrogoncalvesk/mailcow-clamd:2.1
     build: ./services/mailcow-clamd
     restart: always
     environment:
@@ -57,7 +57,7 @@ services:
           - clamd
 
   rspamd:
-    image: pedrogoncalvesk/mailcow-rspamd:2.0
+    image: pedrogoncalvesk/mailcow-rspamd:2.1
     build: ./services/mailcow-rspamd
     stop_grace_period: 30s
     links:
@@ -79,7 +79,7 @@ services:
           - rspamd
 
   php-fpm:
-    image: pedrogoncalvesk/mailcow-phpfpm:2.0
+    image: pedrogoncalvesk/mailcow-phpfpm:2.1
     build: ./services/mailcow-phpfpm
     command: "php-fpm -d date.timezone=${TZ} -d expose_php=0"
     depends_on:
@@ -117,7 +117,7 @@ services:
           - phpfpm
 
   sogo:
-    image: pedrogoncalvesk/mailcow-sogo:2.0
+    image: pedrogoncalvesk/mailcow-sogo:2.1
     build: ./services/mailcow-sogo
     links:
       - mysql
@@ -138,7 +138,7 @@ services:
           - sogo
 
   nginx:
-    image: pedrogoncalvesk/mailcow-nginx:1.0
+    image: pedrogoncalvesk/mailcow-nginx:1.1
     build: ./services/mailcow-nginx
     depends_on:
       - sogo
@@ -170,7 +170,7 @@ services:
           - nginx
 
   dovecot:
-    image: pedrogoncalvesk/mailcow-dovecot:2.0
+    image: pedrogoncalvesk/mailcow-dovecot:2.1
     build: ./services/mailcow-dovecot
     links:
       - redis:redis-mailcow
@@ -206,7 +206,7 @@ services:
           - dovecot
 
   postfix:
-    image: pedrogoncalvesk/mailcow-postfix:2.0
+    image: pedrogoncalvesk/mailcow-postfix:2.1
     build: ./services/mailcow-postfix
     links:
       - redis:redis-mailcow
@@ -242,7 +242,7 @@ services:
           - memcached
 
   acme:
-    image: pedrogoncalvesk/mailcow-acme:2.1
+    image: pedrogoncalvesk/mailcow-acme:2.3
     build: ./services/mailcow-acme
     depends_on:
       - nginx
@@ -273,7 +273,7 @@ services:
           - acme
 
   fail2ban:
-    image: pedrogoncalvesk/mailcow-fail2ban:2.0
+    image: pedrogoncalvesk/mailcow-fail2ban:2.1
     build: ./services/mailcow-fail2ban
     depends_on:
       - dovecot
@@ -295,7 +295,7 @@ services:
     
 
   watchdog:
-    image: pedrogoncalvesk/mailcow-watchdog:2.0
+    image: pedrogoncalvesk/mailcow-watchdog:2.1
     build: ./services/mailcow-watchdog
     links:
       - dockerapi:dockerapi-mailcow
@@ -318,7 +318,7 @@ services:
           - watchdog
 
   dockerapi:
-    image: pedrogoncalvesk/mailcow-dockerapi:2.0
+    image: pedrogoncalvesk/mailcow-dockerapi:2.1
     build: ./services/mailcow-dockerapi
     oom_score_adj: -10
     environment:
