@@ -134,8 +134,8 @@ sleep 2
 docker-compose pull --parallel
 
 # Fix missing SSL, does not overwrite existing files
-[[ ! -d assets/ssl ]] && mkdir -p assets/ssl
-cp -n assets/ssl-example/*.pem assets/ssl/
+# [[ ! -d assets/ssl ]] && mkdir -p assets/ssl
+# cp -n assets/ssl-example/*.pem assets/ssl/
 
 echo -e "\e[32mStarting mailcow...\e[0m"
 sleep 2

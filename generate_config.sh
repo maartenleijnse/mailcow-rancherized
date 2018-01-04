@@ -58,6 +58,9 @@ HTTP_BIND=0.0.0.0
 HTTPS_PORT=443
 HTTPS_BIND=0.0.0.0
 
+DOCKERAPI_PORT=8080
+DOCKERAPI_BIND=0.0.0.0
+
 # ------------------------------
 # Other bindings
 # ------------------------------
@@ -103,7 +106,7 @@ USE_WATCHDOG=n
 
 EOF
 
-mkdir -p assets/ssl
+# mkdir -p assets/ssl
 
 # copy but don't overwrite existing certificate
-cp -n assets/ssl-example/*.pem assets/ssl/
+# cp -n assets/ssl-example/*.pem assets/ssl/
