@@ -220,10 +220,10 @@ services:
     restart: always
 
   watchdog:
-    image: pedrogoncalvesk/mailcow-watchdog:2.1
+    image: pedrogoncalvesk/mailcow-watchdog:2.2
     build: ./services/mailcow-watchdog
     links:
-      - dockerapi:dockerapi-mailcow
+      - dockerapi
     volumes:
       - vmail-vol-1:/vmail:ro
     environment:
