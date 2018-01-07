@@ -45,6 +45,7 @@ services:
       - redis:redis-mailcow
       - mysql:mysql-mailcow
       - rspamd
+      - dockerapi
     depends_on:
       - redis
       - mysql
@@ -243,6 +244,8 @@ services:
     environment:
       - DOCKERAPI_PORT=${DOCKERAPI_PORT:-8080}
       - DOCKERAPI_BIND=${DOCKERAPI_BIND:-0.0.0.0}
+    ports:
+      - "${DOCKERAPI_BIND:-0.0.0.0}:${DOCKERAPI_PORT:-8080}:${DOCKERAPI_PORT:-8080}"
     privileged: true
     oom_score_adj: -10
     restart: always
